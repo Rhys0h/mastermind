@@ -1,14 +1,25 @@
 def start_game
-	@code = [rand(0..3).to_s, rand(0..3).to_s, rand(0..3).to_s, rand(0..3).to_s]
-	$round = 12
-	puts "-- NEW GAME --"
-
-	turn
+	puts "Do you want to write the code or crack the code? (write/crack)"
+	humancomputer = gets.chomp
+	if humancomputer == "write"
+		puts "Enter a four-digit code:"
+		@code = gets.chomp
+		$round = 12
+		computerturn
+	elsif humancomputer == "crack"
+		@code = [rand(0..3).to_s, rand(0..3).to_s, rand(0..3).to_s, rand(0..3).to_s]
+		$round = 12
+		puts "-- NEW GAME --"
+		turn
+	else
+		puts "Type write or crack"
+		start_game
+	end
 end
 
 def turn
 	if $round == 0
-		puts "You ran out of turns. You lose."
+		puts "You ran out of turns. The code was #{@code}. You lose."
 		start_game
 	end
 
@@ -40,6 +51,22 @@ def check_code
 	if hint == "OOOO"
 		puts "You cracked the code, YOU WIN!" 
 		start_game
+	end
+end
+
+def computerturn
+	if $round == 0
+		puts "Computer failed to guess. You win"
+		start_game
+	end
+	computer_guess = [rand(0..3).to_s, rand(0..3).to_s, rand(0..3).to_s, rand(0..3).to_s]
+	puts "#{$round} rounds remain. Computer guesses #{computer_guess}"
+	if computer_guess == @code
+		puts "Computer guesses correctly. You lose"
+		start_game
+	else
+		$round -= 1
+		computerturn
 	end
 end
 
